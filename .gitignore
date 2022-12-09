@@ -1,0 +1,16 @@
+/public/storage
+/public/version.json
+/storage/*.key
+/storage/temp/*
+/storage/framework/degraded
+/vendor
+/.vscode
+/.idea
+.env
+.env.backup
+.env.testing
+.env.production
+.phpunit.result.cache
+.phpstorm.meta.php
+docker-compose.override.yml
+_ide_helper.php

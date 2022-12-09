@@ -8,6 +8,7 @@ parameters:
         - public
         - routes
     level: 9
+    checkMissingCallableSignature: true
     excludePaths:
         - public/index.php
         - routes/console.php

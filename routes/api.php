@@ -2,7 +2,10 @@
 
 declare(strict_types=1);
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\LeadTimeApiController;
+use App\Http\Controllers\API\TestRealisationApiController;
+use App\Http\Controllers\API\TestResultsApiController;
+use App\Http\Middleware\ValidateCmsSignature;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,6 +19,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/hello', function (Request $request) {
-    return "world";
+Route::middleware([ValidateCmsSignature::class])->group(function () {
+    Route::post('/test-realisation', TestRealisationApiController::class)
+        ->name('test-realisation');
+    Route::post('/test-results', TestResultsApiController::class)
+        ->name('test-results');
+    Route::post('/lead-time', LeadTimeApiController::class)
+        ->name('lead-time');
 });

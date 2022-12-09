@@ -59,5 +59,5 @@ jobs:
     - name: Directory Permissions
       run: chmod -R 777 storage bootstrap/cache
     - name: Execute tests (Unit and Feature)
-      run: vendor/bin/phpunit
+      run: ./vendor/bin/pest --ci --coverage
 

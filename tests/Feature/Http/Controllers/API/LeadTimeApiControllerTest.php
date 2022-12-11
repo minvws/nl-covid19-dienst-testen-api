@@ -28,9 +28,10 @@ it('responds with a 200 code', function () {
         'signature' => base64_encode($signature),
     ])
         ->assertOk()
-        ->assertJson([
-            'success' => true
-        ], true);
+        ->assertJsonStructure([
+            'payload',
+            'signature',
+        ]);
 });
 
 function getLeadTimeData()

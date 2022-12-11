@@ -1,6 +1,11 @@
 <?php
 
+// phpcs:disable PSR1.Files.SideEffects
+
+
 declare(strict_types=1);
+
+use function Pest\Faker\faker;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,3 +45,23 @@ expect()->extend('toBeOne', function () {
 | global functions to help you to reduce the number of lines of code in your test files.
 |
 */
+
+
+function getLeadTimeData(): array
+{
+    $faker = faker();
+
+    return [
+        'Aanbieder' => $faker->company(),
+        'Datum' => $faker->date(),
+        'Testtype' => $faker->randomElement(['PCR', 'Antigeen', 'Antistoffen']),
+        'TestenAfgenomen' => $faker->numberBetween(0, 1000000),
+        'TestenMetResultaat' => $faker->numberBetween(0, 1000000),
+        'TestenPositief' => $faker->numberBetween(0, 1000000),
+        'TestenNegatief' => $faker->numberBetween(0, 1000000),
+        'TestenOndefinieerbaar' => $faker->numberBetween(0, 1000000),
+        'TestenAfwachtingResultaat' => $faker->numberBetween(0, 1000000),
+        'TestenAfwachtingValidatie' => $faker->numberBetween(0, 1000000),
+        'TestenZonderUitslag' => $faker->numberBetween(0, 1000000),
+    ];
+}

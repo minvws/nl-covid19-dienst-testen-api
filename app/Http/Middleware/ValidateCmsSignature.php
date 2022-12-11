@@ -6,11 +6,11 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\InvalidCmsSignatureException;
 use Closure;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use MinVWS\Crypto\Laravel\Service\Signature\SignatureVerifyConfig;
 use MinVWS\Crypto\Laravel\SignatureCryptoInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Throwable;
 
 class ValidateCmsSignature
 {
@@ -22,10 +22,11 @@ class ValidateCmsSignature
      * Handle an incoming request.
      *
      * @param Request $request
-     * @param Closure(Request): (Response|RedirectResponse) $next
-     * @return Response|RedirectResponse
+     * @param Closure(Request): (Response) $next
+     * @return Response
+     * @throws Throwable
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         // Get the provider from the payload
         $provider = $request->getProvider();

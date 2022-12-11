@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use JsonException;
 use MinVWS\Crypto\Laravel\SignatureCryptoInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class SignResponseMiddleware
 {
@@ -15,15 +19,16 @@ class SignResponseMiddleware
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * @param Request $request
+     * @param Closure(Request): (Response) $next
+     * @return Response
+     * @throws JsonException
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
 
-        $payload = $response->getContent();
+        $payload = $response->getContent() ?: '';
 
         // TODO: Throw custom exception for JsonException
         $response->setContent(json_encode([

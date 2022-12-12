@@ -27,11 +27,17 @@ class TestResultsRequest extends PayloadRequest
     {
         return [
             'Aanbieder' => ['required', 'string'],
-            'TeststraatID' => ['required', 'string'],
-            'Datum' => ['required', 'string', 'date_format:Y-m-d'],
-            'Testtype' => ['required', 'string', Rule::in([])], // TODO: Add test types from Value Sets end point
-            'GemTijdIdentificatieUitslag' => ['required', 'integer', 'min:0'],
-            'GemTijdIdentificatieEmail' => ['required', 'integer', 'min:0'],
+            'Datum' => ['required', 'string', 'date_format:Y-m-d', 'before_or_equal:now'],
+            // TODO: Add test types from Value Sets end point
+            'Testtype' => ['required', 'string', Rule::in(['PCR', 'Antigeen', 'Antistoffen'])],
+            'TestenAfgenomen' => ['required', 'integer', 'min:0'],
+            'TestenMetResultaat' => ['required', 'integer', 'min:0'],
+            'TestenPositief' => ['required', 'integer', 'min:0'],
+            'TestenNegatief' => ['required', 'integer', 'min:0'],
+            'TestenOndefinieerbaar' => ['required', 'integer', 'min:0'],
+            'TestenAfwachtingResultaat' => ['required', 'integer', 'min:0'],
+            'TestenAfwachtingValidatie' => ['required', 'integer', 'min:0'],
+            'TestenZonderUitslag' => ['required', 'integer', 'min:0'],
         ];
     }
 }

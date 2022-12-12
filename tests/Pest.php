@@ -53,6 +53,20 @@ function getLeadTimeData(): array
 
     return [
         'Aanbieder' => $faker->company(),
+        'TeststraatID' => $faker->randomElement(['AABBBCCCDDD']),
+        'Datum' => $faker->date(),
+        'Testtype' => $faker->randomElement(['PCR', 'Antigeen', 'Antistoffen']),
+        'GemTijdIdentificatieUitslag' => $faker->numberBetween(0, 10000),
+        'GemTijdIdentificatieEmail' => $faker->numberBetween(0, 10000),
+    ];
+}
+
+function getTestResultsData(): array
+{
+    $faker = faker();
+
+    return [
+        'Aanbieder' => $faker->company(),
         'Datum' => $faker->date(),
         'Testtype' => $faker->randomElement(['PCR', 'Antigeen', 'Antistoffen']),
         'TestenAfgenomen' => $faker->numberBetween(0, 1000000),

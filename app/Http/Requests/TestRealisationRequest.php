@@ -28,9 +28,10 @@ class TestRealisationRequest extends PayloadRequest
         return [
             'Aanbieder' => ['required', 'string'],
             'TeststraatID' => ['required', 'string'],
-            'Datum' => ['required', 'string', 'date_format:Y-m-d'],
+            'Datum' => ['required', 'string', 'date_format:Y-m-d', 'before_or_equal:now'],
             'Uur' => ['required', 'string', 'date_format:H:i'],
-            'Testtype' => ['required', 'string', Rule::in([])], // TODO: Add test types from Value Sets end point
+            // TODO: Add test types from Value Sets end point
+            'Testtype' => ['required', 'string', Rule::in(['PCR', 'Antigeen', 'Antistoffen'])],
             'TestenGeboekt' => ['required', 'integer', 'min:0'],
             'TestenAfgenomen' => ['required', 'integer', 'min:0'],
             'TestenMetResultaat' => ['required', 'integer', 'min:0'],

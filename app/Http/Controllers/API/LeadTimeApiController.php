@@ -13,7 +13,6 @@ class LeadTimeApiController extends Controller
     public function __invoke(LeadTimeRequest $request): JsonResponse
     {
         $aanbieder = $request->validated('Aanbieder');
-        dump($aanbieder);
 
         return response()->json([
             'success' => true

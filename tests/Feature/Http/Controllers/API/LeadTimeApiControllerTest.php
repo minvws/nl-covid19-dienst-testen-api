@@ -12,11 +12,11 @@ use MinVWS\Crypto\Laravel\SignatureCryptoInterface;
 use function Pest\Laravel\postJson;
 
 it('responds with success', function () {
-    // TODO: Initialise crypto service that will sign the response
-    // TODO: Use other certificates inside the test folder
-    Config::set('crypto.signature.x509_cert', storage_path('app/testprovider.example/cert.pem'));
-    Config::set('crypto.signature.x509_key', storage_path('app/testprovider.example/key.pem'));
-    Config::set('crypto.signature.x509_chain', storage_path('app/testprovider.example/ca.pem'));
+    // Setup providers config
+    setupResultProvidersConfig();
+
+    // Setup certificates for signing
+    setupAppCertificationForSigning();
 
     // Create crypto service with test provider certificates
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
@@ -25,13 +25,13 @@ it('responds with success', function () {
     $data = getLeadTimeData();
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
 
-    // Sign payload
+    // Sign payload, base64 encoded signature returned
     $signature = $cryptoService->sign($payload, true);
 
     // Send request
     postJson(route('api.lead-time'), [
         'payload' => base64_encode($payload),
-        'signature' => base64_encode($signature),
+        'signature' => $signature,
     ])
         ->assertOk()
         ->assertJsonStructure([
@@ -41,10 +41,11 @@ it('responds with success', function () {
 });
 
 it('responds with a validation exception when a field is missing', function () {
-    // TODO: Initialise crypto service that will sign the response
-    Config::set('crypto.signature.x509_cert', storage_path('app/testprovider.example/cert.pem'));
-    Config::set('crypto.signature.x509_key', storage_path('app/testprovider.example/key.pem'));
-    Config::set('crypto.signature.x509_chain', storage_path('app/testprovider.example/ca.pem'));
+    // Setup providers config
+    setupResultProvidersConfig();
+
+    // Setup certificates for signing
+    setupAppCertificationForSigning();
 
     // Set signature certificate
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
@@ -55,13 +56,13 @@ it('responds with a validation exception when a field is missing', function () {
 
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
 
-    // Sign payload
+    // Sign payload, base64 encoded signature returned
     $signature = $cryptoService->sign($payload, true);
 
     // Send request
     postJson(route('api.lead-time'), [
         'payload' => base64_encode($payload),
-        'signature' => base64_encode($signature),
+        'signature' => $signature,
     ])
         ->assertStatus(422)
         ->assertJsonStructure([
@@ -77,12 +78,63 @@ it('responds with a validation exception when a field is missing', function () {
         ]);
 });
 
+it('responds with an exception when test provider is unknown', function () {
+    // Setup providers config
+    setupResultProvidersConfig();
+
+    // Setup certificates for signing
+    setupAppCertificationForSigning();
+
+    // Set signature certificate
+    $cryptoService = getSignatureCryptoServiceOfFakeProvider();
+
+    // Create payload and unset Datum field
+    $data = getLeadTimeData(
+        providerName: 'UnknownProvider',
+    );
+
+    $payload = json_encode($data, JSON_THROW_ON_ERROR);
+
+    // Sign payload, base64 encoded signature returned
+    $signature = $cryptoService->sign($payload, true);
+
+    // Send request
+    postJson(route('api.lead-time'), [
+        'payload' => base64_encode($payload),
+        'signature' => $signature,
+    ])
+        ->assertStatus(400)
+        ->assertJsonStructure([
+            'payload',
+            'signature',
+        ])
+        ->assertPayloadPath([
+            'success' => false,
+        ])
+        ->assertSignedWith(
+            config('crypto.signature.x509_cert'),
+            config('crypto.signature.x509_chain'),
+        );
+});
+
 function getSignatureCryptoServiceOfFakeProvider(): SignatureCryptoInterface
 {
     return Factory::createSignatureCryptoService(
-        certificatePath: storage_path('app/testprovider.example/cert.pem'),
-        certificateKeyPath: storage_path('app/testprovider.example/key.pem'),
-        certificateChain: storage_path('app/testprovider.example/ca.pem'),
+        certificatePath: base_path('tests/fixtures/certificates/aanbieder-123/cert.pem'),
+        certificateKeyPath: base_path('tests/fixtures/certificates/aanbieder-123/key.pem'),
+        certificateChain: base_path('tests/fixtures/certificates/aanbieder-123/chain.pem'),
         forceProcessSpawn: config('crypto.force_process_spawn'),
     );
+}
+
+function setupResultProvidersConfig(): void
+{
+    Config::set('result-providers.config_file_path', base_path('tests/fixtures/result-providers.json'));
+}
+
+function setupAppCertificationForSigning(): void
+{
+    Config::set('crypto.signature.x509_cert', base_path('tests/fixtures/certificates/app/app.pem'));
+    Config::set('crypto.signature.x509_key', base_path('tests/fixtures/certificates/app/app.key'));
+    Config::set('crypto.signature.x509_chain', base_path('tests/fixtures/certificates/app/ca.pem'));
 }

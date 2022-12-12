@@ -47,12 +47,12 @@ expect()->extend('toBeOne', function () {
 */
 
 
-function getLeadTimeData(): array
+function getLeadTimeData(?string $providerName = null): array
 {
     $faker = faker();
 
     return [
-        'Aanbieder' => $faker->company(),
+        'Aanbieder' => $providerName ?? "aanbieder-123",
         'TeststraatID' => $faker->randomElement(['AABBBCCCDDD']),
         'Datum' => $faker->date(),
         'Testtype' => $faker->randomElement(['PCR', 'Antigeen', 'Antistoffen']),

@@ -46,10 +46,10 @@ class CmsSignedRequestMixin
     public function getSignature(): Closure
     {
         return function (): string {
-            $signature = $this->get('signature');
+            $signature = $this->json('signature');
             throw_if(empty($signature) || !is_string($signature), new InvalidCmsRequestException());
 
-            return base64_decode($signature);
+            return $signature;
         };
     }
 
@@ -73,7 +73,7 @@ class CmsSignedRequestMixin
     public function getJsonPayload(): Closure
     {
         return function (): string {
-            $payload = $this->get('payload');
+            $payload = $this->json('payload');
             throw_if(empty($payload) || !is_string($payload), new InvalidCmsRequestException());
 
             return base64_decode($payload);

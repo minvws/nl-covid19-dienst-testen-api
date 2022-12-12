@@ -196,6 +196,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\CmsSignedServiceProvider::class,
+        App\Providers\ResultProvidersServiceProvider::class,
     ],
 
     /*

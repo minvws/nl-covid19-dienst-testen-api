@@ -14,13 +14,6 @@ jobs:
       - name: Set env
         run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
       - uses: actions/checkout@v3
-      - name: Install Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 16
-          cache: 'npm'
-      - name: Install npm dependencies
-        run: npm ci
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -40,9 +33,9 @@ jobs:
       - name: Make ./storage group writable for, code_owner != run_user
         run: chmod 775 ./storage
       - name: Create tar
-        run: tar -czf dt_api_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./lang ./public ./resources ./routes ./storage ./vendor ./composer.json
+        run: tar -czf dtapi_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./lang ./public ./resources ./routes ./storage ./vendor ./composer.json
       - name: Upload release tar
         uses: actions/upload-artifact@v3
         with:
-          name: harrie3_${{ env.RELEASE_VERSION }}
-          path: harrie3_${{ env.RELEASE_VERSION }}.tar.gz
+          name: dtapi_${{ env.RELEASE_VERSION }}
+          path: dtapi_${{ env.RELEASE_VERSION }}.tar.gz

@@ -1,5 +1,6 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
+    #- ./vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 parameters:
     paths:
         - app
@@ -8,6 +9,7 @@ parameters:
         - public
         - routes
     level: 9
+    checkMissingCallableSignature: true
     excludePaths:
         - public/index.php
         - routes/console.php

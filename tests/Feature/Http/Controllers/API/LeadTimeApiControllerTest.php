@@ -22,7 +22,9 @@ it('responds with success', function () {
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
     // Create payload
-    $data = getLeadTimeData();
+    $data = getLeadTimeData(
+        providerName: "aanbieder-123"
+    );
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
 
     // Sign payload, base64 encoded signature returned
@@ -37,6 +39,9 @@ it('responds with success', function () {
         ->assertJsonStructure([
             'payload',
             'signature',
+        ])
+        ->assertPayloadPath([
+            'success' => true,
         ]);
 });
 
@@ -51,7 +56,9 @@ it('responds with a validation exception when a field is missing', function () {
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
     // Create payload and unset Datum field
-    $data = getLeadTimeData();
+    $data = getLeadTimeData(
+        providerName: "aanbieder-123"
+    );
     unset($data['Datum']);
 
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
@@ -78,7 +85,7 @@ it('responds with a validation exception when a field is missing', function () {
         ]);
 });
 
-it('responds with an exception when test provider is unknown', function () {
+it('responds with an 400 error when test provider is unknown', function () {
     // Setup providers config
     setupResultProvidersConfig();
 
@@ -116,6 +123,39 @@ it('responds with an exception when test provider is unknown', function () {
             config('crypto.signature.x509_chain'),
         );
 });
+
+
+it('responds with an 400 error when test provider is correct but sends a non json payload', function () {
+    // Setup providers config
+    setupResultProvidersConfig();
+
+    // Setup certificates for signing
+    setupAppCertificationForSigning();
+
+    // Create crypto service with test provider certificates
+    $cryptoService = getSignatureCryptoServiceOfFakeProvider();
+
+    // Create payload
+    $payload = "some-non-json-payload";
+
+    // Sign payload, base64 encoded signature returned
+    $signature = $cryptoService->sign($payload, true);
+
+    // Send request
+    postJson(route('api.lead-time'), [
+        'payload' => base64_encode($payload),
+        'signature' => $signature,
+    ])
+        ->assertStatus(400)
+        ->assertJsonStructure([
+            'payload',
+            'signature',
+        ])
+        ->assertPayloadPath([
+            'success' => false,
+        ]);
+});
+
 
 function getSignatureCryptoServiceOfFakeProvider(): SignatureCryptoInterface
 {

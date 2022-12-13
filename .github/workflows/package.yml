@@ -44,5 +44,5 @@ jobs:
       - name: Upload release tar
         uses: actions/upload-artifact@v3
         with:
-          name: harrie3_${{ env.RELEASE_VERSION }}
-          path: harrie3_${{ env.RELEASE_VERSION }}.tar.gz
+          name: dtapi_${{ env.RELEASE_VERSION }}
+          path: dtapi_${{ env.RELEASE_VERSION }}.tar.gz

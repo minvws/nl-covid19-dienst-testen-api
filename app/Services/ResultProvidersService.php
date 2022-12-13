@@ -5,9 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Data\ResultProvider;
-use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
+use Exception;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use RuntimeException;
 use SplFileObject;
 use Throwable;
@@ -20,13 +21,16 @@ class ResultProvidersService
     /**
      * @throws Throwable
      */
-    public function __construct(private readonly string $providersConfigPath)
-    {
+    public function __construct(
+        protected readonly string $providersConfigPath,
+        protected ExceptionHandler $exceptionHandler,
+    ) {
         $this->providers = $this->loadProvidersFromConfig($this->providersConfigPath);
     }
 
     /**
      * @return array<string, ResultProvider>
+     * @throws Throwable
      */
     protected function loadProvidersFromConfig(string $providersConfigPath): array
     {
@@ -38,8 +42,8 @@ class ResultProvidersService
                     'array<string, ' . ResultProvider::class . '>',
                     Source::file(new SplFileObject($providersConfigPath))
                 );
-        } catch (MappingError $error) {
-            report($error);
+        } catch (Exception $error) {
+            $this->exceptionHandler->report($error);
             throw new RuntimeException('Providers config file is not valid');
         }
 

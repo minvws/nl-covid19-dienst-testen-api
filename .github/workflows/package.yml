@@ -33,7 +33,7 @@ jobs:
       - name: Make ./storage group writable for, code_owner != run_user
         run: chmod 775 ./storage
       - name: Create tar
-        run: tar -czf dt_api_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./lang ./public ./resources ./routes ./storage ./vendor ./composer.json
+        run: tar -czf dtapi_${{ env.RELEASE_VERSION }}.tar.gz ./app ./bootstrap ./config ./database ./lang ./public ./resources ./routes ./storage ./vendor ./composer.json
       - name: Upload release tar
         uses: actions/upload-artifact@v3
         with:

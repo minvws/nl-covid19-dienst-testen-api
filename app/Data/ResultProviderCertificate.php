@@ -26,4 +26,12 @@ class ResultProviderCertificate
     {
         return !empty($this->chain);
     }
+
+    public static function fromBase64CertAndChain(string $cert, string $chain = ""): self
+    {
+        return new self(
+            cert: base64_decode($cert),
+            chain: !empty($chain) ? base64_decode($chain) : "",
+        );
+    }
 }

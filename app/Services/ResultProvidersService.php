@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Data\ResultProvider;
+use App\Data\ResultProviderCertificate;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use Exception;
@@ -37,6 +38,7 @@ class ResultProvidersService
         try {
             /** @var array<string, ResultProvider> $providers */
             $providers = (new MapperBuilder())
+                ->registerConstructor(ResultProviderCertificate::fromBase64CertAndChain(...))
                 ->mapper()
                 ->map(
                     'array<string, ' . ResultProvider::class . '>',

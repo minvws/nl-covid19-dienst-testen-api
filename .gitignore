@@ -14,3 +14,4 @@
 .phpstorm.meta.php
 docker-compose.override.yml
 _ide_helper.php
+result-providers.json

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Data;
 
+use RuntimeException;
+
 class ResultProviderCertificate
 {
     public function __construct(
@@ -29,9 +31,16 @@ class ResultProviderCertificate
 
     public static function fromBase64CertAndChain(string $cert, string $chain = ""): self
     {
+        $cert = base64_decode($cert, true);
+        $chain = base64_decode($chain, true);
+
+        if (!is_string($cert) || !is_string($chain)) {
+            throw new RuntimeException('Invalid base64 encoded certificate or chain');
+        }
+
         return new self(
-            cert: base64_decode($cert),
-            chain: !empty($chain) ? base64_decode($chain) : "",
+            cert: $cert,
+            chain: $chain,
         );
     }
 }

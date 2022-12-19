@@ -27,7 +27,7 @@ it('throws an exception when it loads an configuration file with an unsupported 
     $mock = mock(ExceptionHandler::class)->expect();
     $mock->shouldReceive('report')
         ->once()
-        ->withArgs(function(FileExtensionNotHandled $e) {
+        ->withArgs(function (FileExtensionNotHandled $e) {
             return $e->getMessage() === "The file extension `txt` is not handled.";
         });
 

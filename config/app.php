@@ -197,6 +197,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         App\Providers\CmsSignedServiceProvider::class,
         App\Providers\ResultProvidersServiceProvider::class,
+        App\Providers\CoronaCheckServiceProvider::class,
     ],
 
     /*

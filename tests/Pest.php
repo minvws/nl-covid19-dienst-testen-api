@@ -5,6 +5,9 @@
 
 declare(strict_types=1);
 
+use App\Services\CoronaCheck\ValueSetsInterface;
+use App\Services\CoronaCheck\ValueSetsServiceMock;
+
 use function Pest\Faker\faker;
 
 /*
@@ -49,13 +52,14 @@ expect()->extend('toBeOne', function () {
 
 function getLeadTimeData(?string $providerName = null): array
 {
+    $valueSetsService = new ValueSetsServiceMock();
     $faker = faker();
 
     return [
         'Aanbieder' => $providerName ?? "aanbieder-123",
         'TeststraatID' => $faker->randomElement(['AABBBCCCDDD']),
         'Datum' => $faker->date(),
-        'Testtype' => $faker->randomElement(['PCR', 'Antigeen', 'Antistoffen']),
+        'Testtype' => $faker->randomElement($valueSetsService->getCovid19LabTestManufacturerAndNameValues()),
         'GemTijdIdentificatieUitslag' => $faker->numberBetween(0, 10000),
         'GemTijdIdentificatieEmail' => $faker->numberBetween(0, 10000),
     ];
@@ -63,12 +67,13 @@ function getLeadTimeData(?string $providerName = null): array
 
 function getTestResultsData(): array
 {
+    $valueSetsService = new ValueSetsServiceMock();
     $faker = faker();
 
     return [
         'Aanbieder' => $faker->company(),
         'Datum' => $faker->date(),
-        'Testtype' => $faker->randomElement(['PCR', 'Antigeen', 'Antistoffen']),
+        'Testtype' => $faker->randomElement($valueSetsService->getCovid19LabTestManufacturerAndNameValues()),
         'TestenAfgenomen' => $faker->numberBetween(0, 1000000),
         'TestenMetResultaat' => $faker->numberBetween(0, 1000000),
         'TestenPositief' => $faker->numberBetween(0, 1000000),
@@ -78,4 +83,9 @@ function getTestResultsData(): array
         'TestenAfwachtingValidatie' => $faker->numberBetween(0, 1000000),
         'TestenZonderUitslag' => $faker->numberBetween(0, 1000000),
     ];
+}
+
+function setupMockedValueSetsService(): void
+{
+    \Illuminate\Support\Facades\App::bind(ValueSetsInterface::class, ValueSetsServiceMock::class);
 }

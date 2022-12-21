@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Services\ResultProvidersService;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
 
@@ -23,7 +22,7 @@ class ResultProvidersServiceProvider extends ServiceProvider
                 throw new RuntimeException('Result providers config file path is not set');
             }
 
-            return new ResultProvidersService($configFilePath, app(ExceptionHandler::class));
+            return new ResultProvidersService($configFilePath);
         });
     }
 }

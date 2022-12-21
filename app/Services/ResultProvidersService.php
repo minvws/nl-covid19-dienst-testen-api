@@ -9,7 +9,6 @@ use App\Data\ResultProviderCertificate;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use Exception;
-use Illuminate\Contracts\Debug\ExceptionHandler;
 use RuntimeException;
 use SplFileObject;
 use Throwable;
@@ -24,7 +23,6 @@ class ResultProvidersService
      */
     public function __construct(
         protected readonly string $providersConfigPath,
-        protected ExceptionHandler $exceptionHandler,
     ) {
         $this->providers = $this->loadProvidersFromConfig($this->providersConfigPath);
     }
@@ -45,8 +43,7 @@ class ResultProvidersService
                     Source::file(new SplFileObject($providersConfigPath))
                 );
         } catch (Exception $error) {
-            $this->exceptionHandler->report($error);
-            throw new RuntimeException('Providers config file is not valid');
+            throw new RuntimeException('Providers config file is not valid', 0, $error);
         }
 
         return $providers;

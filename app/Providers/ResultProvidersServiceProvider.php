@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Services\ResultProvidersFileService;
 use App\Services\ResultProvidersService;
 use Illuminate\Support\ServiceProvider;
 use RuntimeException;
@@ -23,6 +24,15 @@ class ResultProvidersServiceProvider extends ServiceProvider
             }
 
             return new ResultProvidersService($configFilePath);
+        });
+
+        $this->app->singleton(ResultProvidersFileService::class, function () {
+            $fileStoragePath = config('result-providers.storage_path');
+            if (!is_string($fileStoragePath)) {
+                throw new RuntimeException('Storage path in result providers config is not set');
+            }
+
+            return new ResultProvidersFileService($fileStoragePath);
         });
     }
 }

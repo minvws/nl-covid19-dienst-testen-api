@@ -11,13 +11,18 @@ use MinVWS\Crypto\Laravel\SignatureCryptoInterface;
 
 use function Pest\Laravel\postJson;
 
-it('responds with success', function () {
+beforeEach(function () {
     // Setup providers config
     setupResultProvidersConfig();
 
+    // Setup mocked value sets
+    setupMockedValueSetsService();
+
     // Setup certificates for signing
     setupAppCertificationForSigning();
+});
 
+it('responds with success', function () {
     // Create crypto service with test provider certificates
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
@@ -46,12 +51,6 @@ it('responds with success', function () {
 });
 
 it('responds with a validation exception when a field is missing', function () {
-    // Setup providers config
-    setupResultProvidersConfig();
-
-    // Setup certificates for signing
-    setupAppCertificationForSigning();
-
     // Set signature certificate
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
@@ -86,12 +85,6 @@ it('responds with a validation exception when a field is missing', function () {
 });
 
 it('responds with an 400 error when test provider is unknown', function () {
-    // Setup providers config
-    setupResultProvidersConfig();
-
-    // Setup certificates for signing
-    setupAppCertificationForSigning();
-
     // Set signature certificate
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
@@ -126,12 +119,6 @@ it('responds with an 400 error when test provider is unknown', function () {
 
 
 it('responds with an 400 error when test provider is correct but sends a non json payload', function () {
-    // Setup providers config
-    setupResultProvidersConfig();
-
-    // Setup certificates for signing
-    setupAppCertificationForSigning();
-
     // Create crypto service with test provider certificates
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 

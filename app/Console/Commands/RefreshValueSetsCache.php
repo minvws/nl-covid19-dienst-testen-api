@@ -27,6 +27,7 @@ class RefreshValueSetsCache extends Command
     /**
      * Execute the console command.
      *
+     * @param ValueSetsService $service
      * @return int
      */
     public function handle(ValueSetsService $service): int

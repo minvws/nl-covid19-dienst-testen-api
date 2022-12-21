@@ -7,7 +7,7 @@ namespace App\Services\CoronaCheck;
 use App\Exceptions\CoronaCheckServiceException;
 use Illuminate\Support\Arr;
 
-class ValueSetsService extends Service
+class ValueSetsService extends Service implements ValueSetsInterface
 {
     public const CACHE_KEY = 'value_sets_config';
 

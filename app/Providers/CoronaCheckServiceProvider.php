@@ -6,6 +6,7 @@ namespace App\Providers;
 
 use App\Exceptions\CoronaCheckServiceException;
 use App\Services\CoronaCheck\Config\Config;
+use App\Services\CoronaCheck\ValueSetsInterface;
 use App\Services\CoronaCheck\ValueSetsService;
 use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Source;
@@ -25,6 +26,7 @@ class CoronaCheckServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $this->app->bind(ValueSetsInterface::class, ValueSetsService::class);
         $this->app->singleton(ValueSetsService::class, function ($app) {
             $config = $this->getConfig();
             $valueSetsConfig = $config->getValueSetsConfig();

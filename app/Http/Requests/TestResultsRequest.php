@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Exceptions\CoronaCheckServiceException;
+use App\Services\CoronaCheck\ValueSetsService;
 use Illuminate\Validation\Rule;
 
 class TestResultsRequest extends PayloadRequest
@@ -22,14 +24,18 @@ class TestResultsRequest extends PayloadRequest
      * Get the validation rules that apply to the request.
      *
      * @return array<string, mixed>
+     * @throws CoronaCheckServiceException
      */
-    public function rules(): array
+    public function rules(ValueSetsService $valueSetsService): array
     {
         return [
             'Aanbieder' => ['required', 'string'],
             'Datum' => ['required', 'string', 'date_format:Y-m-d', 'before_or_equal:now'],
-            // TODO: Add test types from Value Sets end point
-            'Testtype' => ['required', 'string', Rule::in(['PCR', 'Antigeen', 'Antistoffen'])],
+            'Testtype' => [
+                'required',
+                'string',
+                Rule::in($valueSetsService->getCovid19LabTestManufacturerAndNameValues()),
+            ],
             'TestenAfgenomen' => ['required', 'integer', 'min:0'],
             'TestenMetResultaat' => ['required', 'integer', 'min:0'],
             'TestenPositief' => ['required', 'integer', 'min:0'],

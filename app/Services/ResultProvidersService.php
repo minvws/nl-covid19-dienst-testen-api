@@ -36,7 +36,6 @@ class ResultProvidersService
     protected function loadProvidersFromConfig(string $providersConfigPath): array
     {
         try {
-            /** @var array<string, ResultProvider> $providers */
             $providers = (new MapperBuilder())
                 ->registerConstructor(ResultProviderCertificate::fromBase64CertAndChain(...))
                 ->mapper()

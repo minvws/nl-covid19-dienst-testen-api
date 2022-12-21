@@ -1,6 +1,6 @@
 includes:
     - ./vendor/nunomaduro/larastan/extension.neon
-    #- ./vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
+    - ./vendor/cuyz/valinor/qa/PHPStan/valinor-phpstan-configuration.php
 parameters:
     paths:
         - app

@@ -136,32 +136,7 @@ it('can not get getCovid19LabTestManufacturerAndName when the value for key covi
 
 it('can get getCovid19LabTestManufacturerAndName', function () {
     $content = [
-        'covid-19-lab-test-manufacturer-and-name' => [
-            "1341" => [
-                "display" => "SARS-CoV-2 Antigen Rapid Test",
-                "lang" => "en",
-                "active" => true,
-                "system" => "https://covid-19-diagnostics.jrc.ec.europa.eu/devices",
-                "version" => "2021-07-07 05:23:59 CEST",
-                "validUntil" => null,
-            ],
-            "1065" => [
-                "display" => "System for Rapid Detection of SARS CoV 2",
-                "lang" => "en",
-                "active" => true,
-                "system" => "https://covid-19-diagnostics.jrc.ec.europa.eu/devices",
-                "version" => "2021-07-07 05:13:00 CEST",
-                "validUntil" => null,
-            ],
-            "1581" => [
-                "display" => "OnSite COVID-19 Ag Rapid Test",
-                "lang" => "en",
-                "active" => true,
-                "system" => "https://covid-19-diagnostics.jrc.ec.europa.eu/devices",
-                "version" => "2021-07-07 05:10:05 CEST",
-                "validUntil" => null,
-            ],
-        ],
+        'covid-19-lab-test-manufacturer-and-name' => getCovid19LabTestManufacturerAndNameTestSet(),
     ];
 
     $client = getMockClient(getMockClientMessageWithPayloadAndFakeSignature($content));
@@ -194,3 +169,60 @@ it('can get getCovid19LabTestManufacturerAndName', function () {
             ],
         ]);
 });
+
+it('can get getCovid19LabTestManufacturerAndNameValues', function () {
+    $content = [
+        'covid-19-lab-test-manufacturer-and-name' => getCovid19LabTestManufacturerAndNameTestSet(),
+    ];
+
+    $client = getMockClient(getMockClientMessageWithPayloadAndFakeSignature($content));
+
+    $service = new ValueSetsService(
+        client: $client,
+        cacheRepository: null,
+        signatureService: null,
+        certificates: [],
+        cacheTtl: 900,
+    );
+
+    expect($service)
+        ->toBeInstanceOf(Service::class)
+        ->getCovid19LabTestManufacturerAndNameValues()->toBe([
+            '1065',
+            '1341',
+            '1581',
+            'System for Rapid Detection of SARS CoV 2',
+            'SARS-CoV-2 Antigen Rapid Test',
+            'OnSite COVID-19 Ag Rapid Test',
+        ]);
+});
+
+function getCovid19LabTestManufacturerAndNameTestSet()
+{
+    return [
+        "1341" => [
+            "display" => "SARS-CoV-2 Antigen Rapid Test",
+            "lang" => "en",
+            "active" => true,
+            "system" => "https://covid-19-diagnostics.jrc.ec.europa.eu/devices",
+            "version" => "2021-07-07 05:23:59 CEST",
+            "validUntil" => null,
+        ],
+        "1065" => [
+            "display" => "System for Rapid Detection of SARS CoV 2",
+            "lang" => "en",
+            "active" => true,
+            "system" => "https://covid-19-diagnostics.jrc.ec.europa.eu/devices",
+            "version" => "2021-07-07 05:13:00 CEST",
+            "validUntil" => null,
+        ],
+        "1581" => [
+            "display" => "OnSite COVID-19 Ag Rapid Test",
+            "lang" => "en",
+            "active" => true,
+            "system" => "https://covid-19-diagnostics.jrc.ec.europa.eu/devices",
+            "version" => "2021-07-07 05:10:05 CEST",
+            "validUntil" => null,
+        ],
+    ];
+}

@@ -21,6 +21,20 @@ class ValueSetsService extends Service
     }
 
     /**
+     * @return array<int, string>
+     * @throws CoronaCheckServiceException
+     */
+    public function getCovid19LabTestManufacturerAndNameValues(): array
+    {
+        $values = $this->getCovid19LabTestManufacturerAndName();
+
+        return array_merge(
+            array_column($values, 'code'),
+            array_column($values, 'name'),
+        );
+    }
+
+    /**
      * @return array<int, array{code: string, name: string, active: bool}>
      * @throws CoronaCheckServiceException
      */

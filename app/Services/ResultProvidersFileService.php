@@ -21,11 +21,16 @@ class ResultProvidersFileService
      * @param string $provider
      * @param DateTimeImmutable $date
      * @param array<string, string> $data
+     * @param EndpointType $endpointType
      * @return void
      */
-    public function storeLeadTimeData(string $provider, DateTimeImmutable $date, array $data): void
-    {
-        $filePath = $this->getFilePath($provider, $date, EndpointType::LeadTime);
+    public function storeProviderData(
+        string $provider,
+        DateTimeImmutable $date,
+        array $data,
+        EndpointType $endpointType
+    ): void {
+        $filePath = $this->getFilePath($provider, $date, $endpointType);
 
         $this->storeCsvFile($filePath, $data);
     }

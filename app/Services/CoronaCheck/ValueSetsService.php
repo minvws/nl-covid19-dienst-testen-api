@@ -74,4 +74,16 @@ class ValueSetsService extends Service implements ValueSetsInterface
             ->values()
             ->toArray();
     }
+
+    public function isHealthy(): bool
+    {
+        try {
+            if (empty($this->getCovid19LabTestManufacturerAndNameValues())) {
+                return false;
+            }
+        } catch (CoronaCheckServiceException) {
+            return false;
+        }
+        return true;
+    }
 }

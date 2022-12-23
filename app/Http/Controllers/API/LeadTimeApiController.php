@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\API;
 
+use App\Enums\EndpointType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LeadTimeRequest;
 use App\Services\ResultProvidersFileService;
@@ -20,7 +21,7 @@ class LeadTimeApiController extends Controller
         $date = DateTimeImmutable::createFromFormat('Y-m-d', $request->validated('Datum'));
 
         // @phpstan-ignore-next-line - just for now
-        $fileService->storeLeadTimeData($provider, $date, $request->safe()->toArray());
+        $fileService->storeProviderData($provider, $date, $request->safe()->toArray(), EndpointType::LeadTime);
 
         return response()->json([
             'success' => true

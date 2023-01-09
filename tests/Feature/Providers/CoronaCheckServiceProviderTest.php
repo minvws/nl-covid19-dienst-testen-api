@@ -17,7 +17,7 @@ it('loads the value sets service mock when the value sets url is empty', functio
 });
 
 it('loads the value sets service', function () {
-    Config::set('corona-check.value_sets.url', 'https://example.nl');
+    Config::set('corona-check.value_sets.url', 'https://verifier-api.coronacheck.nl/v8/dcbs/value_sets');
 
     $service = app(ValueSetsInterface::class);
     expect($service)
@@ -25,8 +25,8 @@ it('loads the value sets service', function () {
 });
 
 it('loads the value sets service with proxy', function () {
-    Config::set('corona-check.value_sets.url', 'https://example.nl');
-    Config::set('corona-check.proxy', 'https://example.nl');
+    Config::set('corona-check.value_sets.url', 'https://verifier-api.coronacheck.nl/v8/dcbs/value_sets');
+    Config::set('corona-check.proxy', 'https://rdobeheer.nl');
 
     $service = app(ValueSetsInterface::class);
     expect($service)
@@ -58,13 +58,13 @@ it('throws an exception when corona check config does not have the correct typin
     ],
     fn() => [
         'value_sets' => [
-            'url' => 'https://example.nl',
+            'url' => 'https://verifier-api.coronacheck.nl/v8/dcbs/value_sets',
             'cache_ttl' => '',
         ],
     ],
     fn() => [
         'value_sets' => [
-            'url' => 'https://example.nl',
+            'url' => 'https://verifier-api.coronacheck.nl/v8/dcbs/value_sets',
             'certificate_file_paths' => null,
         ],
     ],

@@ -49,7 +49,7 @@ class ValueSetsService extends Service implements ValueSetsInterface
     }
 
     /**
-     * @param array<string, array{display: string, active: bool}> $data
+     * @param array<string, array{display: ?string, active: ?bool}> $data
      * @return array<int, array{code: string, name: string, active: bool}>
      */
     protected function mapVaccinesData(array $data): array

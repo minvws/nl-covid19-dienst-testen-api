@@ -160,6 +160,11 @@ function setupResultProvidersConfig(): void
         'result-providers.config_file_path',
         base_path('tests/fixtures/result-providers/result-providers.json')
     );
+
+    Config::set(
+        'result-providers.storage_path',
+        sys_get_temp_dir()
+    );
 }
 
 function setupAppCertificationForSigning(): void

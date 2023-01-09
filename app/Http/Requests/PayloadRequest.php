@@ -15,8 +15,7 @@ class PayloadRequest extends FormRequest
     /**
      * Get data to be validated from the request.
      *
-     * @phpstan-ignore-next-line (currently no generics)
-     * @return array
+     * @return array<mixed>
      * @throws InvalidCmsSignatureException
      */
     public function validationData(): array

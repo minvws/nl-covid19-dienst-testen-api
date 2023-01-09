@@ -17,8 +17,7 @@ use JsonException;
 class CmsSignedRequestMixin
 {
     /**
-     * @phpstan-ignore-next-line (Dont know array content)
-     * @return Closure(): array
+     * @return Closure(): array<mixed>
      */
     public function getPayload(): Closure
     {

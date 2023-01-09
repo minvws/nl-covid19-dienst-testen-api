@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Exceptions\CoronaCheckServiceException;
+use App\Services\CoronaCheck\ValueSetsInterface;
 use App\Services\CoronaCheck\ValueSetsService;
 use Illuminate\Console\Command;
 
@@ -30,7 +31,7 @@ class RefreshValueSetsCache extends Command
      * @param ValueSetsService $service
      * @return int
      */
-    public function handle(ValueSetsService $service): int
+    public function handle(ValueSetsInterface $service): int
     {
         $service->clearCache();
         $this->info("Cache cleared");
@@ -39,7 +40,6 @@ class RefreshValueSetsCache extends Command
         try {
             $data = $service->fetch();
         } catch (CoronaCheckServiceException $e) {
-            report($e);
             $this->error("Failed to fetch remote value sets: " . $e->getMessage());
             return Command::FAILURE;
         }

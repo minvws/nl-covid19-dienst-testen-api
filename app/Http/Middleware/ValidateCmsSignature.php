@@ -6,7 +6,7 @@ namespace App\Http\Middleware;
 
 use App\Data\ResultProviderCertificate;
 use App\Exceptions\InvalidCmsSignatureException;
-use App\Services\ResultProvidersService;
+use App\Services\ResultProvidersInterface;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
@@ -19,7 +19,7 @@ use Throwable;
 class ValidateCmsSignature
 {
     public function __construct(
-        protected ResultProvidersService $resultProvidersService,
+        protected ResultProvidersInterface $resultProvidersService,
         protected TempFileInterface $tempFileService,
     ) {
     }

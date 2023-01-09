@@ -11,9 +11,9 @@ use Symfony\Component\Finder\SplFileInfo;
 class EndpointConfig
 {
     public function __construct(
-        protected readonly string $url,
-        protected readonly int $cacheTtl,
-        protected readonly string $certificateFilePaths,
+        protected readonly string $url = '',
+        protected readonly int $cacheTtl = 0,
+        protected readonly string $certificateFilePaths = '',
     ) {
     }
 

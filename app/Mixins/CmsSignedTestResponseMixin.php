@@ -19,8 +19,7 @@ use MinVWS\Crypto\Laravel\Service\Signature\SignatureVerifyConfig;
 class CmsSignedTestResponseMixin
 {
     /**
-     * @phpstan-ignore-next-line (Dont know array content)
-     * @return Closure(array $path): TestResponse
+     * @return Closure(array<mixed> $path): TestResponse
      */
     public function assertPayloadPath(): Closure
     {

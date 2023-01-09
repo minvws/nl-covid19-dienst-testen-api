@@ -18,4 +18,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', InfoController::class);
-Route::get('/health', HealthController::class);
+Route::get('/health', HealthController::class)
+    ->name('health');

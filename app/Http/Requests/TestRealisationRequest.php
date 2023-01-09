@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests;
 
 use App\Exceptions\CoronaCheckServiceException;
-use App\Services\CoronaCheck\ValueSetsService;
+use App\Services\CoronaCheck\ValueSetsInterface;
 use Illuminate\Validation\Rule;
 
 class TestRealisationRequest extends PayloadRequest
@@ -26,7 +26,7 @@ class TestRealisationRequest extends PayloadRequest
      * @return array<string, mixed>
      * @throws CoronaCheckServiceException
      */
-    public function rules(ValueSetsService $valueSetsService): array
+    public function rules(ValueSetsInterface $valueSetsService): array
     {
         return [
             'Aanbieder' => ['required', 'string'],

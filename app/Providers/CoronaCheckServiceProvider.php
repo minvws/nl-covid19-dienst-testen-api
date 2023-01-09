@@ -8,30 +8,38 @@ use App\Exceptions\CoronaCheckServiceException;
 use App\Services\CoronaCheck\Config\Config;
 use App\Services\CoronaCheck\ValueSetsInterface;
 use App\Services\CoronaCheck\ValueSetsService;
+use App\Services\CoronaCheck\ValueSetsServiceMock;
 use CuyZ\Valinor\Mapper\MappingError;
 use CuyZ\Valinor\Mapper\Source\Source;
 use CuyZ\Valinor\MapperBuilder;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Foundation\Application;
 use Illuminate\Support\ServiceProvider;
 use MinVWS\Crypto\Laravel\Factory;
 use Illuminate\Contracts\Cache\Repository;
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
 
 class CoronaCheckServiceProvider extends ServiceProvider
 {
     /**
-     * Bootstrap services.
+     * Register services.
      *
      * @return void
      */
-    public function boot(): void
+    public function register(): void
     {
-        $this->app->bind(ValueSetsInterface::class, ValueSetsService::class);
-        $this->app->singleton(ValueSetsService::class, function ($app) {
-            $config = $this->getConfig();
-            $valueSetsConfig = $config->getValueSetsConfig();
+        $this->app->singleton(ValueSetsInterface::class, function (Application $app) {
+            $config = $this->app->make(ConfigRepository::class);
 
-            $client = $this->createGuzzleClient($valueSetsConfig->getUrl(), $config->getProxy());
+            $coronaCheckConfig = $this->getCoronaCheckConfig($config->get('corona-check'));
+            $valueSetsConfig = $coronaCheckConfig->getValueSetsConfig();
+
+            if (empty($valueSetsConfig->getUrl())) {
+                return new ValueSetsServiceMock();
+            }
+
+            $client = $this->createGuzzleClient($valueSetsConfig->getUrl(), $coronaCheckConfig->getProxy());
             $service = Factory::createSignatureCryptoService();
 
             return new ValueSetsService(
@@ -60,10 +68,9 @@ class CoronaCheckServiceProvider extends ServiceProvider
     /**
      * @throws CoronaCheckServiceException
      */
-    protected function getConfig(): Config
+    protected function getCoronaCheckConfig(mixed $config): Config
     {
-        $coronaCheckConfig = config('corona-check');
-        if (!is_array($coronaCheckConfig)) {
+        if (!is_array($config)) {
             throw new CoronaCheckServiceException('Corona check config is not an array');
         }
 
@@ -72,7 +79,7 @@ class CoronaCheckServiceProvider extends ServiceProvider
                 ->mapper()
                 ->map(
                     Config::class,
-                    (Source::array($coronaCheckConfig))
+                    (Source::array($config))
                         ->camelCaseKeys()
                 );
         } catch (MappingError $error) {

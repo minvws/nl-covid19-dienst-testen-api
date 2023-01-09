@@ -4,14 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers;
 
-use App\Services\CoronaCheck\ValueSetsService;
+use App\Services\CoronaCheck\ValueSetsInterface;
+use App\Services\ResultProvidersFileService;
+use App\Services\ResultProvidersInterface;
 use Illuminate\Http\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class HealthController extends Controller
 {
+    /**
+     * List dependencies so there will be a 500 error when the service is not bound.
+     **/
     public function __construct(
-        protected ValueSetsService $valueSetsService,
+        protected ValueSetsInterface $valueSetsService,
+        protected ResultProvidersInterface $resultProvidersService,
+        protected ResultProvidersFileService $resultProvidersFileService,
     ) {
     }
 

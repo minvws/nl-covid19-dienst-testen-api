@@ -22,4 +22,24 @@ class ValueSetsServiceMock implements ValueSetsInterface
             'Antistoffen',
         ];
     }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function fetch(): array
+    {
+        return [
+            'mock' => [],
+        ];
+    }
+
+    public function isHealthy(): bool
+    {
+        return true;
+    }
+
+    public function clearCache(): void
+    {
+        // Mock does not have cache
+    }
 }

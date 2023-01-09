@@ -154,14 +154,6 @@ function getSignatureCryptoServiceOfFakeProvider(): SignatureCryptoInterface
     );
 }
 
-function setupResultProvidersConfig(): void
-{
-    Config::set(
-        'result-providers.config_file_path',
-        base_path('tests/fixtures/result-providers/result-providers.json')
-    );
-}
-
 function setupAppCertificationForSigning(): void
 {
     Config::set('crypto.signature.x509_cert', base_path('tests/fixtures/certificates/app/app.pem'));

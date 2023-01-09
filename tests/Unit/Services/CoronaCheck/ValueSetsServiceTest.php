@@ -197,7 +197,7 @@ it('can get getCovid19LabTestManufacturerAndNameValues', function () {
         ]);
 });
 
-function getCovid19LabTestManufacturerAndNameTestSet()
+function getCovid19LabTestManufacturerAndNameTestSet(): array
 {
     return [
         "1341" => [

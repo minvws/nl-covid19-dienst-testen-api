@@ -89,3 +89,16 @@ function setupMockedValueSetsService(): void
 {
     \Illuminate\Support\Facades\App::bind(ValueSetsInterface::class, ValueSetsServiceMock::class);
 }
+
+function setupResultProvidersConfig(): void
+{
+    Config::set(
+        'result-providers.config_file_path',
+        base_path('tests/fixtures/result-providers/result-providers.json')
+    );
+
+    Config::set(
+        'result-providers.storage_path',
+        sys_get_temp_dir()
+    );
+}

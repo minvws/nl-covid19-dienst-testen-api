@@ -63,5 +63,11 @@ it('responds with status 503 when the value sets service is not healthy', functi
 
     // Send request
     getJson(route('health'))
-        ->assertStatus(503);
+        ->assertStatus(503)
+        ->assertJson([
+            'healthy' => false,
+            'externals' => [
+                'value_sets' => false
+            ]
+        ]);
 });

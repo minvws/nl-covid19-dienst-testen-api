@@ -19,6 +19,8 @@ If you want to start with an example file you could copy the example file with t
 cp result-providers.json.example result-providers.json
 ```
 
+[Read more about the result providers file](result-providers.md)
+
 ## Run with docker-compose
 
 Local requirements: `docker`, `docker-compose`, `openssl`, `composer`.

@@ -11,7 +11,8 @@ cp .env.example .env
 ```
 
 Edit `.env` to fill out the required environment variables.
-If you want 
+
+[Read more about the environment variables](environment-variables.md)
 
 ### Create result-providers.json file
 If you want to start with an example file you could copy the example file with the following command.
@@ -47,7 +48,7 @@ Install the dependencies:
 
 ```sh
 composer install
-php artisan key:generate`
+php artisan key:generate
 ```
 
 Then run the application however you normally run PHP application, or with artisan:

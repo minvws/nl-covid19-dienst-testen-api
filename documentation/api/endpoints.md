@@ -1,11 +1,11 @@
 # API Endpoints
 The application has the following endpoints:
 
-| Endpoint              | Description                                                                                                                            |
-|-----------------------|----------------------------------------------------------------------------------------------------------------------------------------|
-| /api/test-realisation | Deliver information about the number of booked and done tests on a specific date and hour.                                             |
-| /api/test-results     | Deliver information about the results numbers of the done tests on a specific date.                                                    |
-| /api/lead-time        | Deliver information about the lead time from identification at the test facility till the the time that the user has the test results. |
+| Endpoint                                     | Description                                                                                                                        |
+|----------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------|
+| [/api/test-realisation](test-realisation.md) | Deliver information about the number of booked and done tests on a specific date and hour.                                         |
+| [/api/test-results](test-results.md)         | Deliver information about the results numbers of the done tests on a specific date.                                                |
+| [/api/lead-time](lead-time.md)               | Deliver information about the lead time from identification at the test facility till the time that the user has the test results. |
 
 You can click on the endpoint to go to the endpoint specific documentation, there you will find the validation rules for example. 
 
@@ -33,4 +33,4 @@ The json payload always need contain the `Aanbieder` field. The value of this fi
 So we know the data is coming from a result provider that is allowed to send data to the API and that the payload is not tampered.
 
 ### New result provider
-After completing the procedure at Dienst Testen, please email [helpdesk@rdobeheer.nl](mailto:helpdesk@rdobeheer.nl?subject=Aansluiten dienst testen API) with your signing certificate and chain certificate. We will add your certificate to the allow list and you can start sending data to the API.
+After completing the procedure at Dienst Testen, please email [helpdesk@rdobeheer.nl]( mailto:helpdesk@rdobeheer.nl?subject=Aansluiten%20dienst%20testen%20API) with your signing certificate and chain certificate. We will add your certificate to the allow list and you can start sending data to the API.

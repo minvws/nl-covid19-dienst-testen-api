@@ -2,22 +2,24 @@
 
 API for test providers to send details about test realisations, test results and lead times.
 
+## API Endpoints
+
+Information about the API endpoints can be found in the [API endpoints](documentation/api/endpoints.md).
+
 ## Local installation & development
 
-For local installation instructions, see [DEVELOPMENT.md](documentation/DEVELOPMENT.md).
+For local installation instructions, see [development.md](documentation/development.md).
 
 ## Production Installation
 
-For production installation instructions, see [PRODUCTION.md](documentation/PRODUCTION.md).
+For production installation instructions, see [production.md](documentation/production.md).
 
-## Quick Start Configuration
+## Environments
 
-See [.env.example](./.env.example).
+The following environments are currently up and running.
 
-Short list of some important variables.
-
-```
-APP_NAME=
-APP_ENV=			                     # E.g. production
-APP_KEY=                                 # Can be generated with `php artisan key:generate`
-```
+| Domain                                                       | Environment |
+|--------------------------------------------------------------|-------------|
+| [api.diensttesten.nl](https://api.diensttesten.nl)           | Production  |
+| [api.acc.diensttesten.nl](https://api.acc.diensttesten.nl)   | Acceptance  |
+| [api.test.diensttesten.nl](https://api.test.diensttesten.nl) | Test        |

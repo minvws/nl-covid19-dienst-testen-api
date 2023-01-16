@@ -34,3 +34,30 @@ So we know the data is coming from a result provider that is allowed to send dat
 
 ### New result provider
 After completing the procedure at Dienst Testen, please email [helpdesk@rdobeheer.nl]( mailto:helpdesk@rdobeheer.nl?subject=Aansluiten%20dienst%20testen%20API) with your signing certificate and chain certificate. We will add your certificate to the allow list and you can start sending data to the API.
+
+## Signing requests
+The API requires a request to be signed. The CMS signing process is the same as CoronaCheck and has been documented in the [coronacheck provider docs](https://github.com/minvws/nl-covid19-coronacheck-provider-docs/blob/main/docs/providing-events-by-digid.md#cms-signature-algorithm).
+
+For reference the signing process by hand is described below.
+
+1. Create a payload file
+```json
+{"Aanbieder":"Teststraat Test","TeststraatID":"AABBBCCCDDD","Datum":"2022-12-23","Testtype":"Abbott Rapid Diagnostics, Panbio Covid-19 Ag Rapid Test","GemTijdIdentificatieUitslag":2,"GemTijdIdentificatieEmail":1}
+```
+
+2. Sign payload and create base64 encoded signature
+```sh
+# payload.json is a file containing the json payload
+# certificate.crt is the signing certificate
+# chain.crt should be a chain of certificates including the CA certificate
+# certificate.key is the private key of the signing certificate
+openssl cms -in payload.json -sign -outform DER -signer certificate.crt -certfile chain.crt -inkey certificate.key | base64 -w 0
+```
+
+3. Create a request body
+```json
+{
+    "payload": "<base64 encoded version of the payload>",
+    "signature": "<base64 encoded version of the signature>"
+}
+```

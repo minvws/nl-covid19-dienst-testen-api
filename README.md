@@ -6,13 +6,9 @@ API for test providers to send details about test realisations, test results and
 
 Information about the API endpoints can be found in the [API endpoints](documentation/api/endpoints.md).
 
-## Local installation & development
+## Development
 
-For local installation instructions, see [development.md](documentation/development.md).
-
-## Production Installation
-
-For production installation instructions, see [production.md](documentation/production.md).
+For development, see [development.md](documentation/development.md).
 
 ## Environments
 

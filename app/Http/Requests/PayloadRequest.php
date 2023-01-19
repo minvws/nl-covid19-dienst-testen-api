@@ -22,4 +22,28 @@ class PayloadRequest extends FormRequest
     {
         return self::getPayload();
     }
+
+    /**
+     * @throws InvalidCmsSignatureException
+     */
+    public function getProvider(): string
+    {
+        $provider = $this->validationData()['Aanbieder'];
+        if (!is_string($provider)) {
+            return '';
+        }
+
+        return $provider;
+    }
+
+    /**
+     * @return array<string, bool|float|int|string|null>
+     */
+    public function getSafePayload(): array
+    {
+        /** @var array<string, bool|float|int|string|null> $data */
+        $data = $this->safe()->toArray();
+
+        return $data;
+    }
 }

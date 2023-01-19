@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\EndpointType;
 use DateTimeImmutable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use RuntimeException;
 use Symfony\Component\Uid\Uuid;
@@ -19,28 +20,26 @@ class ResultProvidersFileService
 
     /**
      * @param string $provider
-     * @param DateTimeImmutable $date
-     * @param array<string, string> $data
+     * @param array<string, bool|float|int|string|null> $data
      * @param EndpointType $endpointType
      * @return void
      */
     public function storeProviderData(
         string $provider,
-        DateTimeImmutable $date,
         array $data,
         EndpointType $endpointType
     ): void {
-        $filePath = $this->getFilePath($provider, $date, $endpointType);
+        $filePath = $this->getFilePath($provider, Carbon::now()->toDateTimeImmutable(), $endpointType);
 
-        $this->storeCsvFile($filePath, $data);
+        $this->storeCsvFile($filePath, $this->getCsvRows($data));
     }
 
     /**
      * @param string $filePath
-     * @param array<string, string> $data
+     * @param array<array<int|string, bool|float|int|string|null>> $rows
      * @return void
      */
-    protected function storeCsvFile(string $filePath, array $data): void
+    protected function storeCsvFile(string $filePath, array $rows): void
     {
         $dirPath = dirname($filePath);
 
@@ -53,15 +52,15 @@ class ResultProvidersFileService
             throw new RuntimeException(sprintf('File "%s" was not created', $filePath));
         }
 
-        foreach ($this->getCsvRows($data) as $row) {
+        foreach ($rows as $row) {
             fputcsv($file, $row);
         }
         fclose($file);
     }
 
     /**
-     * @param array<string, string> $data
-     * @return array<array<string>>
+     * @param array<string, bool|float|int|string|null> $data
+     * @return array<int, array<int, bool|float|int|string|null>>
      */
     protected function getCsvRows(array $data): array
     {

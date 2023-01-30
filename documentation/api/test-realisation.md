@@ -4,23 +4,23 @@ The test realisation endpoint accepts information about the number of booked and
 
 ## Fields
 
-| Field                             | Type    | Required | Validation                                                                                                                                |
-|-----------------------------------|---------|----------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| Aanbieder                         | string  | Yes      | Value should be in our allow list and signing certificate of signature should match                                                       |
-| TeststraatID                      | string  | Yes      |                                                                                                                                           |
-| Datum                             | string  | Yes      | Date string like: YYYY-MM-DD                                                                                                              |
-| Uur                               | string  | Yes      | Hour string like: HH:MM                                                                                                                   |
-| Testtype                          | string  | Yes      | Value or name from the [EU valueset for manufacturers](https://github.com/ehn-dcc-development/eu-dcc-valuesets/blob/main/test-manf.json). |
-| TestenGeboekt                     | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenAfgenomen                   | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenMetResultaat                | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenMetResultaatAsprakenportaal | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenMetResultaatAdhoc           | integer | Yes      | `>= 0`                                                                                                                                    |
-| Hertesten                         | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenNoShows                     | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenAfwachtingResultaat         | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenAfwachtingValidatie         | integer | Yes      | `>= 0`                                                                                                                                    |
-| TestenZonderUitslag               | integer | Yes      | `>= 0`                                                                                                                                    |
+| Field                              | Type    | Required | Validation                                                                                                                                |
+|------------------------------------|---------|----------|-------------------------------------------------------------------------------------------------------------------------------------------|
+| Aanbieder                          | string  | Yes      | Value should be in our allow list and signing certificate of signature should match                                                       |
+| TeststraatID                       | string  | Yes      |                                                                                                                                           |
+| Datum                              | string  | Yes      | Date string like: YYYY-MM-DD                                                                                                              |
+| Uur                                | string  | Yes      | Hour string like: HH:MM                                                                                                                   |
+| Testtype                           | string  | Yes      | Value or name from the [EU valueset for manufacturers](https://github.com/ehn-dcc-development/eu-dcc-valuesets/blob/main/test-manf.json). |
+| TestenGeboekt                      | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenAfgenomen                    | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenMetResultaat                 | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenMetResultaatAfsprakenportaal | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenMetResultaatAdhoc            | integer | Yes      | `>= 0`                                                                                                                                    |
+| Hertesten                          | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenNoShows                      | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenAfwachtingResultaat          | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenAfwachtingValidatie          | integer | Yes      | `>= 0`                                                                                                                                    |
+| TestenZonderUitslag                | integer | Yes      | `>= 0`                                                                                                                                    |
 
 ## Request
 
@@ -35,7 +35,7 @@ The test realisation endpoint accepts information about the number of booked and
     "TestenGeboekt": 1,
     "TestenAfgenomen": 1,
     "TestenMetResultaat": 1,
-    "TestenMetResultaatAsprakenportaal": 0,
+    "TestenMetResultaatAfsprakenportaal": 0,
     "TestenMetResultaatAdhoc": 0,
     "Hertesten": 0,
     "TestenNoShows": 0,
@@ -153,4 +153,4 @@ When there are errors on multiple fields:
 ### 500 Internal Server Error
 When something internally in the application went wrong. The application will respond with a 500 Internal Server Error.
 
-The response could be a little unpredictable and therefore we cannot provide a good example for it and you should act on the status code.
+The response could be a little unpredictable, and therefore we cannot provide a good example for it and you should act on the status code.

@@ -42,12 +42,11 @@ it('creates a service', function () {
 
 it('returns a cached array', function () {
     $client = mock(ClientInterface::class)->expect();
-    $client->shouldNotReceive('request');
+    $client->allows('request')->never();
 
     $cache = mock(Repository::class)->expect();
-    $cache->shouldReceive('get')
-        ->once()
-        ->andReturn(['foo' => 'bar']);
+    $cache->expects('get')
+        ->andReturns(['foo' => 'bar']);
 
     $cacheableService = new class (
         client: $client,
@@ -67,10 +66,10 @@ it('returns a cached array', function () {
 
 it('does not clear the cache', function () {
     $client = mock(ClientInterface::class)->expect();
-    $client->shouldNotReceive('request');
+    $client->allows('request')->never();
 
     $cache = mock(Repository::class)->expect();
-    $cache->shouldNotReceive('forget');
+    $cache->allows('forget')->never();
 
     $service = new Service(
         client: $client,
@@ -87,11 +86,10 @@ it('does not clear the cache', function () {
 
 it('clears the cache', function () {
     $client = mock(ClientInterface::class)->expect();
-    $client->shouldNotReceive('request');
+    $client->allows('request')->never();
 
     $cache = mock(Repository::class)->expect();
-    $cache->shouldReceive('forget')
-        ->once()
+    $cache->expects('forget')
         ->withArgs(['test-cache-key']);
 
     $cacheableService = new class (
@@ -133,7 +131,7 @@ it('fetches and returns content', function () {
 
 it('should not cache because there is no cache key', function () {
     $cache = mock(Repository::class)->expect();
-    $cache->shouldNotReceive('get', 'put');
+    $cache->shouldNotReceive(['get', 'put']);
     $client = getMockClient(getMockClientMessageWithPayloadAndFakeSignature([
         'some' => 'content',
     ]));
@@ -298,9 +296,8 @@ it('fetches content, validates signature, put content in cache and returns conte
 
     $cache = mock(Repository::class)->expect();
     $cache
-        ->shouldReceive('get')
-        ->once()
-        ->andReturn(null)
+        ->expects('get')
+        ->andReturns(null)
         ->shouldReceive('put')
         ->once()
         ->with('test-cache-key', $content, 900);
@@ -325,14 +322,12 @@ it('fetches content, validates signature, put content in cache and returns conte
 function getMockClient(MessageInterface $body): ClientInterface
 {
     $response = mock(ResponseInterface::class)->expect();
-    $response->shouldReceive('getBody')
-        ->once()
-        ->andReturn($body);
+    $response->expects('getBody')
+        ->andReturns($body);
 
     $client = mock(ClientInterface::class)->expect();
-    $client->shouldReceive('request')
-        ->once()
-        ->andReturn($response);
+    $client->expects('request')
+        ->andReturns($response);
 
     return $client;
 }
@@ -371,9 +366,8 @@ function getMockClientMessageWithPayloadAndMissingSignature(array $payload): Mes
 function getMockClientMessage(string $content): MessageInterface
 {
     $body = mock(MessageInterface::class)->expect();
-    $body->shouldReceive('getContents')
-        ->once()
-        ->andReturn($content);
+    $body->expects('getContents')
+        ->andReturns($content);
 
     return $body;
 }

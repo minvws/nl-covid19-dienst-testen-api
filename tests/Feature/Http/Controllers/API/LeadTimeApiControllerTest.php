@@ -76,6 +76,7 @@ it('responds with a validation exception when a field is missing', function () {
             'signature',
         ])
         ->assertPayloadPath([
+            'message' => 'The datum field is required.',
             'errors' => [
                 'Datum' => [
                     'The datum field is required.',

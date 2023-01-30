@@ -6,17 +6,15 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class InvalidCmsException extends Exception
 {
     /**
      * Render the exception into an HTTP response.
      *
-     * @param  Request  $request
      * @return JsonResponse
      */
-    public function render(Request $request): JsonResponse
+    public function render(): JsonResponse
     {
         return response()->json([
             'success' => false,

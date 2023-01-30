@@ -10,6 +10,7 @@ use Illuminate\Contracts\Cache\Repository;
 use JsonException;
 use MinVWS\Crypto\Laravel\Service\Signature\SignatureVerifyConfig;
 use MinVWS\Crypto\Laravel\SignatureCryptoInterface;
+use Psr\SimpleCache\InvalidArgumentException;
 use Throwable;
 
 class Service
@@ -38,6 +39,7 @@ class Service
     /**
      * @return array<string, mixed>
      * @throws CoronaCheckServiceException
+     * @throws InvalidArgumentException
      */
     public function fetch(): array
     {

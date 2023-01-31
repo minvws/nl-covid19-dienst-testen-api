@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests;
 
+use App\Exceptions\InvalidCmsSignatureException;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
@@ -15,6 +16,7 @@ class PayloadRequest extends FormRequest
      * Get data to be validated from the request.
      *
      * @return array<mixed>
+     * @throws InvalidCmsSignatureException
      */
     public function validationData(): array
     {

@@ -7,6 +7,9 @@ declare(strict_types=1);
 
 use App\Services\CoronaCheck\ValueSetsInterface;
 use App\Services\CoronaCheck\ValueSetsServiceMock;
+use Illuminate\Support\Facades\Config;
+use MinVWS\Crypto\Laravel\Factory;
+use MinVWS\Crypto\Laravel\SignatureCryptoInterface;
 
 use function Pest\Faker\faker;
 
@@ -65,13 +68,13 @@ function getLeadTimeData(?string $providerName = null): array
     ];
 }
 
-function getTestResultsData(): array
+function getTestResultsData(?string $providerName = null): array
 {
     $valueSetsService = new ValueSetsServiceMock();
     $faker = faker();
 
     return [
-        'Aanbieder' => $faker->company(),
+        'Aanbieder' => $providerName ?? "aanbieder-123",
         'Datum' => $faker->date(),
         'Testtype' => $faker->randomElement($valueSetsService->getCovid19LabTestManufacturerAndNameValues()),
         'TestenAfgenomen' => $faker->numberBetween(0, 1000000),
@@ -79,6 +82,30 @@ function getTestResultsData(): array
         'TestenPositief' => $faker->numberBetween(0, 1000000),
         'TestenNegatief' => $faker->numberBetween(0, 1000000),
         'TestenOndefinieerbaar' => $faker->numberBetween(0, 1000000),
+        'TestenAfwachtingResultaat' => $faker->numberBetween(0, 1000000),
+        'TestenAfwachtingValidatie' => $faker->numberBetween(0, 1000000),
+        'TestenZonderUitslag' => $faker->numberBetween(0, 1000000),
+    ];
+}
+
+function getTestRealisationData(?string $providerName = null): array
+{
+    $valueSetsService = new ValueSetsServiceMock();
+    $faker = faker();
+
+    return [
+        'Aanbieder' => $providerName ?? "aanbieder-123",
+        'TeststraatID' => $faker->randomElement(['AABBBCCCDDD']),
+        'Datum' => $faker->date(),
+        'Uur' => $faker->time('H:i'),
+        'Testtype' => $faker->randomElement($valueSetsService->getCovid19LabTestManufacturerAndNameValues()),
+        'TestenGeboekt' => $faker->numberBetween(0, 1000000),
+        'TestenAfgenomen' => $faker->numberBetween(0, 1000000),
+        'TestenMetResultaat' => $faker->numberBetween(0, 1000000),
+        'TestenMetResultaatAfsprakenportaal' => $faker->numberBetween(0, 1000000),
+        'TestenMetResultaatAdhoc' => $faker->numberBetween(0, 1000000),
+        'Hertesten' => $faker->numberBetween(0, 1000000),
+        'TestenNoShows' => $faker->numberBetween(0, 1000000),
         'TestenAfwachtingResultaat' => $faker->numberBetween(0, 1000000),
         'TestenAfwachtingValidatie' => $faker->numberBetween(0, 1000000),
         'TestenZonderUitslag' => $faker->numberBetween(0, 1000000),
@@ -101,4 +128,21 @@ function setupResultProvidersConfig(): void
         'result-providers.storage_path',
         sys_get_temp_dir()
     );
+}
+
+function getSignatureCryptoServiceOfFakeProvider(): SignatureCryptoInterface
+{
+    return Factory::createSignatureCryptoService(
+        certificatePath: base_path('tests/fixtures/certificates/aanbieder-123/cert.pem'),
+        certificateKeyPath: base_path('tests/fixtures/certificates/aanbieder-123/key.pem'),
+        certificateChain: base_path('tests/fixtures/certificates/aanbieder-123/chain.pem'),
+        forceProcessSpawn: config('crypto.force_process_spawn'),
+    );
+}
+
+function setupAppCertificationForSigning(): void
+{
+    Config::set('crypto.signature.x509_cert', base_path('tests/fixtures/certificates/app/app.pem'));
+    Config::set('crypto.signature.x509_key', base_path('tests/fixtures/certificates/app/app.key'));
+    Config::set('crypto.signature.x509_chain', base_path('tests/fixtures/certificates/app/ca.pem'));
 }

@@ -40,11 +40,10 @@ it('creates a value sets service', function () {
 
 it('clears the cache', function () {
     $client = mock(ClientInterface::class)->expect();
-    $client->shouldNotReceive('request');
+    $client->allows('request')->never();
 
     $cache = mock(Repository::class)->expect();
-    $cache->shouldReceive('forget')
-        ->once()
+    $cache->expects('forget')
         ->withArgs(['value_sets_config']);
 
     $service = new ValueSetsService(
@@ -64,10 +63,9 @@ it('clears the cache', function () {
 it('fetches, puts in cache and returns content', function () {
     $cache = mock(Repository::class)->expect();
     $cache
-        ->shouldReceive('get')
-            ->once()
+        ->expects('get')
             ->withArgs(['value_sets_config'])
-            ->andReturn(null)
+            ->andReturns(null)
         ->shouldReceive('put')
             ->once()
             ->withArgs(['value_sets_config', [

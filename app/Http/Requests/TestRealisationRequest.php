@@ -41,7 +41,7 @@ class TestRealisationRequest extends PayloadRequest
             'TestenGeboekt' => ['required', 'integer', 'min:0'],
             'TestenAfgenomen' => ['required', 'integer', 'min:0'],
             'TestenMetResultaat' => ['required', 'integer', 'min:0'],
-            'TestenMetResultaatAsprakenportaal' => ['required', 'integer', 'min:0'],
+            'TestenMetResultaatAfsprakenportaal' => ['required', 'integer', 'min:0'],
             'TestenMetResultaatAdhoc' => ['required', 'integer', 'min:0'],
             'Hertesten' => ['required', 'integer', 'min:0'],
             'TestenNoShows' => ['required', 'integer', 'min:0'],

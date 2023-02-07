@@ -91,15 +91,25 @@ base64 -w 0 certificate.crt
 
 [Read more about the result providers file](result-providers.md)
 
-## Run with sail (docker-compose)
+## Run with docker-compose
 
 Local requirements: `docker`, `docker-compose`, `openssl`, `composer`.
+
+### Makefile
+Using the included Makefile you can install dependencies and run the application with:
+
+```sh
+make sail
+```
+
+### Manually
 
 Install the dependencies:
 
 ```sh
 composer install
 php artisan key:generate
+php artisan ide-helper:generate
 ```
 
 Then run the application via sail:
@@ -115,15 +125,42 @@ By default, the application can be accessed at [http://localhost](http://localho
 
 Local requirements: PHP 8.1 with `ext-json` and `ext-sodium`, `composer`.
 
+### Makefile
+Using the included Makefile you can install dependencies and run the application with:
+
+```sh
+make serve
+```
+
+### Manually
+
+
 Install the dependencies:
 
 ```sh
 composer install
 php artisan key:generate
+php artisan ide-helper:generate
 ```
 
 Then run the application however you normally run PHP application, or with artisan:
 
 ```
 php artisan serve
+```
+
+## Quality Assurance
+
+This project is set up with linters (`phpcs`, `phpstan`, `psalm`) and tests (`Pest`).
+To run `psalm`, you'll need to set up the ide-helper file once:
+
+```sh
+php artisan ide-helper:generate
+```
+
+Afterwards, you can run linters and tests respectively with:
+
+```
+make check
+make test
 ```

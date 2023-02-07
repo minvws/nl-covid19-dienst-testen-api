@@ -23,7 +23,7 @@ it('responds with success', function () {
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
     // Create payload
-    $data = getLeadTimeData(
+    $data = getTestRealisationData(
         providerName: "aanbieder-123"
     );
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
@@ -31,8 +31,7 @@ it('responds with success', function () {
     // Sign payload, base64 encoded signature returned
     $signature = $cryptoService->sign($payload, true);
 
-    // Send request
-    postJson(route('api.lead-time'), [
+    postJson(route('api.test-realisation'), [
         'payload' => base64_encode($payload),
         'signature' => $signature,
     ])
@@ -51,9 +50,7 @@ it('responds with a validation exception when a field is missing', function () {
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
     // Create payload and unset Datum field
-    $data = getLeadTimeData(
-        providerName: "aanbieder-123"
-    );
+    $data = getTestRealisationData();
     unset($data['Datum']);
 
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
@@ -62,7 +59,7 @@ it('responds with a validation exception when a field is missing', function () {
     $signature = $cryptoService->sign($payload, true);
 
     // Send request
-    postJson(route('api.lead-time'), [
+    postJson(route('api.test-realisation'), [
         'payload' => base64_encode($payload),
         'signature' => $signature,
     ])
@@ -72,7 +69,6 @@ it('responds with a validation exception when a field is missing', function () {
             'signature',
         ])
         ->assertPayloadPath([
-            'message' => 'The datum field is required.',
             'errors' => [
                 'Datum' => [
                     'The datum field is required.',
@@ -86,8 +82,8 @@ it('responds with an 400 error when test provider is unknown', function () {
     $cryptoService = getSignatureCryptoServiceOfFakeProvider();
 
     // Create payload and unset Datum field
-    $data = getLeadTimeData(
-        providerName: 'UnknownProvider',
+    $data = getTestRealisationData(
+        providerName: "unknown-provider"
     );
 
     $payload = json_encode($data, JSON_THROW_ON_ERROR);
@@ -96,7 +92,7 @@ it('responds with an 400 error when test provider is unknown', function () {
     $signature = $cryptoService->sign($payload, true);
 
     // Send request
-    postJson(route('api.lead-time'), [
+    postJson(route('api.test-realisation'), [
         'payload' => base64_encode($payload),
         'signature' => $signature,
     ])
@@ -126,7 +122,7 @@ it('responds with an 400 error when test provider is correct but sends a non jso
     $signature = $cryptoService->sign($payload, true);
 
     // Send request
-    postJson(route('api.lead-time'), [
+    postJson(route('api.test-realisation'), [
         'payload' => base64_encode($payload),
         'signature' => $signature,
     ])

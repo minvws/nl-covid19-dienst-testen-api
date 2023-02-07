@@ -55,8 +55,7 @@ it('responds with status 500 when we have an empty storage path', function () {
 
 it('responds with status 503 when the value sets service is not healthy', function () {
     $valueSets = mock(ValueSetsInterface::class)->expect();
-    $valueSets->shouldReceive('isHealthy')
-        ->once()
+    $valueSets->expects('isHealthy')
         ->andReturn(false);
 
     \Illuminate\Support\Facades\App::instance(ValueSetsInterface::class, $valueSets);

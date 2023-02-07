@@ -1,7 +1,7 @@
 # API Response Signing
 The API response is cryptographically signed. For this we use the Cryptographic Message Syntax [CMS](https://en.wikipedia.org/wiki/Cryptographic_Message_Syntax). This is the standard for cryptographically signing/verifying signed data and/or digital documents.
 
-The applications sign the response payload with a X509 certificate and sends the payload and signature in a json object as the response.
+The application signs the response payload with a X509 certificate and sends the payload and signature in a json object as the response.
 
 See the [environment variables documentation](environment-variables.md#api-response-signing) for the necessary configuration. 
 

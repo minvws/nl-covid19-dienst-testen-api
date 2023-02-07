@@ -119,6 +119,8 @@ vendor/bin/sail up
 
 By default, the application can be accessed at [http://localhost](http://localhost).
 
+[Read more about Laravel Sail](https://laravel.com/docs/sail)
+
 ## Run another way (e.g. `php artisan serve`)
 
 Local requirements: PHP 8.1 with `ext-json` and `ext-sodium`, `composer`.

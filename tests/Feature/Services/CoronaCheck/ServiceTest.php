@@ -10,8 +10,8 @@ use App\Services\CoronaCheck\Service;
 use GuzzleHttp\ClientInterface;
 use Illuminate\Contracts\Cache\Repository;
 use MinVWS\Crypto\Laravel\Factory;
-use Psr\Http\Message\MessageInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\StreamInterface;
 
 it('creates a service with only a client', function () {
     $client = mock(ClientInterface::class)->expect();
@@ -319,7 +319,7 @@ it('fetches content, validates signature, put content in cache and returns conte
         ]);
 });
 
-function getMockClient(MessageInterface $body): ClientInterface
+function getMockClient(StreamInterface $body): ClientInterface
 {
     $response = mock(ResponseInterface::class)->expect();
     $response->expects('getBody')
@@ -332,7 +332,7 @@ function getMockClient(MessageInterface $body): ClientInterface
     return $client;
 }
 
-function getMockClientMessageWithStringPayloadAndSignature(string $payload): MessageInterface
+function getMockClientMessageWithStringPayloadAndSignature(string $payload): StreamInterface
 {
     return getMockClientMessage(json_encode([
         'signature' => 'some-signature-that-is-not-verified',
@@ -340,7 +340,7 @@ function getMockClientMessageWithStringPayloadAndSignature(string $payload): Mes
     ]));
 }
 
-function getMockClientMessageWithPayloadAndFakeSignature(array $payload): MessageInterface
+function getMockClientMessageWithPayloadAndFakeSignature(array $payload): StreamInterface
 {
     return getMockClientMessage(json_encode([
         'signature' => 'some-signature-that-is-not-verified',
@@ -348,7 +348,7 @@ function getMockClientMessageWithPayloadAndFakeSignature(array $payload): Messag
     ]));
 }
 
-function getMockClientMessageWithPayloadAndSignature(array $payload, string $signature): MessageInterface
+function getMockClientMessageWithPayloadAndSignature(array $payload, string $signature): StreamInterface
 {
     return getMockClientMessage(json_encode([
         'payload' => base64_encode(json_encode($payload)),
@@ -356,16 +356,16 @@ function getMockClientMessageWithPayloadAndSignature(array $payload, string $sig
     ]));
 }
 
-function getMockClientMessageWithPayloadAndMissingSignature(array $payload): MessageInterface
+function getMockClientMessageWithPayloadAndMissingSignature(array $payload): StreamInterface
 {
     return getMockClientMessage(json_encode([
         'payload' => base64_encode(json_encode($payload)),
     ]));
 }
 
-function getMockClientMessage(string $content): MessageInterface
+function getMockClientMessage(string $content): StreamInterface
 {
-    $body = mock(MessageInterface::class)->expect();
+    $body = mock(StreamInterface::class)->expect();
     $body->expects('getContents')
         ->andReturns($content);
 
